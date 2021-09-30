@@ -1,1 +1,14 @@
 # Defaults variables for role vsftpd
+
+# Do we want to enable anonymous access
+vsftpd_anonymous: False
+# If we enable anonymous, we probably want it to chroot directly into one specific directory
+vsftpd_anonymous_chroot: /var/ftp
+
+# Which selinux booleans do we want to enable ?
+# example
+# vsftpd_selinux_booleans:
+#   - ftpd_full_access
+#   - ftpd_use_nfs
+#   - ftpd_use_passive_mode
+vsftpd_selinux_booleans: []

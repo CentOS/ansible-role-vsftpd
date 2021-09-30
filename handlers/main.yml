@@ -1,1 +1,6 @@
 # Defaults handlers for role vsftpd
+
+- name: restart_vsftpd
+  service:
+    name: vsftpd
+    state: restarted

@@ -1,1 +1,49 @@
 # Defaults tasks for role vsftpd
+
+- name: Installing vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+
+- name: Configuring vsftdp
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd/vsftpd.conf
+  notify: restart_vsftpd  
+  tags:
+    - config
+
+- name: Ensuring vsftpd is started
+  service:
+    name: vsftpd
+    state: started
+    enabled: True
+
+- name: Opening up ftp in iptables
+  include_role:
+    name: iptables
+    tasks_from: custom-policy
+  vars:
+    iptables_policy_name: "ftp-{{ item }}"
+    iptables_protocol: tcp
+    iptables_port: "{{ item }}"
+    iptables_source: "0.0.0.0/0"
+  with_items:
+    - '20'
+    - '21'
+    - '2020'
+    - '2021'
+  tags:
+    - iptables
+
+- name: Enabling selinux booleans if needed
+  seboolean:
+    name: "{{ item }}"
+    state: yes
+    persistent: yes
+  with_items: "{{ vsftpd_selinux_booleans }}"  
+  tags:
+    - selinux
+
+
+
