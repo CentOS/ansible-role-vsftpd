@@ -12,3 +12,9 @@ vsftpd_anonymous_chroot: /var/ftp
 #   - ftpd_use_nfs
 #   - ftpd_use_passive_mode
 vsftpd_selinux_booleans: []
+
+# Which tcp ports/range to open for pasv/passive transfer 
+# That eases opening some specific firewalls in between
+# Attention, it has to be within a range as we'll use the sequence for local iptables rules too
+vsftpd_pasv_min_port: 2020
+vsftpd_pasv_max_port: 2021

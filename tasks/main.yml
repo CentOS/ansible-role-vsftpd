@@ -19,7 +19,7 @@
     state: started
     enabled: True
 
-- name: Opening up ftp in iptables
+- name: Opening up standard ftp ports in iptables
   include_role:
     name: iptables
     tasks_from: custom-policy
@@ -31,8 +31,18 @@
   with_items:
     - '20'
     - '21'
-    - '2020'
-    - '2021'
+  tags:
+    - iptables
+
+- name: Opening up passive ftp ports in iptables
+  include_role:
+    name: iptables
+    tasks_from: custom-policy
+  vars:
+    iptables_policy_name: "ftp-pasv-ports"
+    iptables_protocol: tcp
+    iptables_port: "{{ vsftpd_pasv_min_port }}:{{ vsftpd_pasv_max_port }}"
+    iptables_source: "0.0.0.0/0"
   tags:
     - iptables
 
